@@ -1,0 +1,230 @@
+Question 1. Find the middle element of the stack
+(Basically it's approach when a doubly linked list is being used)
+#include <iostream>
+using namespace std;
+
+
+class myStack{
+    struct Node{
+        Node * prev;
+        Node * next;
+        int num;
+
+        Node (int num){ this->num=num; }
+    };
+
+    Node * head=NULL;
+    Node * mid=NULL;
+    int size=0;
+
+public:
+    void push(int data){
+        Node * temp=new Node(data);
+        //When the doubly linked list is empty
+        if(size==0){
+            head=temp;
+            mid=temp;
+            size++;
+        }
+
+        head->next=temp;
+        temp->prev=head;
+        head=head->next;
+        // When the size is odd then the middle changes from the (mid=mid->next)
+        if(size%2==1){
+            mid=mid->next;
+        }
+        size++;
+    }
+
+int pop(){
+     int data=-1;
+    if(size!=0){
+       
+        Node * toPop=head;
+        data=toPop->num;
+        if(size==1){
+            head=NULL;
+            mid=NULL;            
+        }
+   
+    
+    else{
+        head=head->prev;
+        head->next=NULL;
+        //In pop operation the mid changes when the size is even 
+        if(size%2==0){
+        mid=mid->prev;
+
+        }
+    }
+         delete toPop;
+        size--;
+
+}
+return data;
+}
+
+int findMiddle(){
+    if(size==0){
+        return -1;
+    }
+    else{
+        return mid->num;
+    }
+}
+};
+int main()
+{
+    myStack st;
+    st.push(11);
+    st.push(22);
+    st.push(33);
+    st.push(44);
+    st.push(55);
+    st.push(66);
+    st.push(77);
+    st.push(88);
+    st.push(99);
+    cout <<"Popped : "<< st.pop() << endl;
+    cout <<"Popped : "<< st.pop() << endl;
+    cout <<"Middle Element : "<< st.findMiddle() << endl;
+        return 0;
+}
+
+2. Implement two stacks in an array
+
+It's an optimized approach
+class Stack{
+    public:
+    int top1;
+    int top2;
+    int size;
+    int *arr;
+    Stack(int size){
+        top1=-1;
+        top2=size;
+       this->size=size;
+       arr=new int[size];
+    }
+
+    void push1(int data1){
+      if(top2-top1>1){
+        top1++;
+        arr[top1]=data1;
+      }
+      else{
+        cout<<"Stack Overflow by"<< data1 <<" ";
+      }
+    }
+
+    void push2(int data2){
+        if(top2-top1){
+            top2--;
+            arr[top2]=data2;
+        }
+        else{
+            cout<<"Stack Overflow by"<< data2 <<" ";
+        }
+    }
+
+    void pop1(){
+        if(top1==-1){
+            cout<<"Stack UnderFlow"<<" ";
+        }
+        else{
+            int ans1=arr[top1];
+            top1--;
+            
+        }
+    }
+    void  pop2(){
+        if(top2==size-1){
+            cout<<"Stack Underflow"<<" ";
+            
+        }
+        else{
+            int ans2=arr[top2];
+            top2++;
+            
+        }
+    }
+   
+   
+3.Implement an stack from scratch
+    
+#include <iostream>
+
+using namespace std;
+class Stack{
+    public:
+    int *arr;
+    int top;
+    int size;
+    Stack(int size){
+        this->size=size;
+        arr=new int[size];
+        top=-1;
+    }
+
+
+void push(int data){
+    if(size-top>1){
+    //space available
+    top++;
+    arr[top]=data;
+    }
+
+    else{
+    //space not available
+    cout<<"Stack Overflow by "<< <<endl;
+
+    }
+}
+
+void pop(){
+    if(top==-1){
+        //space not available
+        cout<<"Stack Underflow"<<endl;
+    }
+
+    else{
+     top--;
+    }
+}
+bool isEmpty(){
+    if(top==-1){
+        return true;
+     }
+    else{
+        return false;
+         }
+}
+
+int getTop(){
+    if(top==-1){
+        return -1;
+    }
+    else{
+        int ans=arr[top];
+        return ans;
+    }
+}
+int getLength(){
+ return top+1;
+}
+};
+int main(){
+    Stack s(10);
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.push(40);
+    s.push(50);
+
+    while(!s.isEmpty()){
+        cout<<s.getTop()<<" ";
+        s.pop();
+    }
+
+}
